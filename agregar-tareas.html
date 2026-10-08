@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agregar tareas</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; color: #1d2733; line-height: 1.5; }
+    form { display: grid; gap: .9rem; margin: 1.25rem 0; }
+    label { display: grid; gap: .25rem; font-weight: 600; }
+    input, select, button { font: inherit; padding: .5rem .6rem; border: 1px solid #9aa7b2; border-radius: 6px; }
+    button { background: #1f6f5c; color: #fff; border-color: #1f6f5c; cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #8fd0bf; }
+    #error { color: #b3261e; min-height: 1.4em; }
+    li { margin-bottom: .4rem; }
+  </style>
+</head>
+<body>
+  <a href="index.html">← Volver al inicio</a>
+  <h1>Agregar tareas</h1>
+
+  <form id="formulario">
+    <label>Título de la tarea
+      <input type="text" id="titulo" maxlength="80" placeholder="Ej.: Preparar informe">
+    </label>
+    <label>Prioridad
+      <select id="prioridad">
+        <option>Baja</option>
+        <option selected>Media</option>
+        <option>Alta</option>
+      </select>
+    </label>
+    <label>Fecha límite
+      <input type="date" id="fecha">
+    </label>
+    <button type="submit">Agregar tarea</button>
+    <div id="error" role="alert"></div>
+  </form>
+
+  <h2>Tareas agregadas</h2>
+  <p id="vacio">Todavía no agregaste tareas.</p>
+  <ul id="lista"></ul>
+
+  <script>
+    const form = document.getElementById('formulario');
+    const lista = document.getElementById('lista');
+    const vacio = document.getElementById('vacio');
+    const error = document.getElementById('error');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const titulo = document.getElementById('titulo').value.trim();
+      const prioridad = document.getElementById('prioridad').value;
+      const fecha = document.getElementById('fecha').value;
+
+      if (!titulo) {
+        error.textContent = 'Escribe un título para la tarea.';
+        return;
+      }
+      error.textContent = '';
+
+      const li = document.createElement('li');
+      li.textContent = `${titulo} — prioridad ${prioridad}` + (fecha ? `, hasta ${fecha}` : '');
+      lista.appendChild(li);
+      vacio.hidden = true;
+      form.reset();
+      document.getElementById('titulo').focus();
+    });
+  </script>
+</body>
+</html>
